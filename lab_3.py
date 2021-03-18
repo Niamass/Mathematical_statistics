@@ -11,7 +11,6 @@ def drawBoxplot(tips, name):
     sns.despine(offset=10)
     plt.title(name)
     plt.xlabel("x")
-    plt.ylabel("n")
     plt.savefig(str(name)+'.jpg')
 
 def len_mus(Q1, Q3):
