@@ -32,7 +32,7 @@ def PrintAll(r_all, r_s_all, r_q_all):
     print('r_S ' + 'D(z) = ', round(np.var(r_s_all), 3))
     print('r_Q ' + 'D(z) = ', round(np.var(r_q_all), 3))
 
-def DrawEllips(size, ro):
+def DrawEllipse(size, ro):
     sig_x = 1
     sig_y = 1
     # координаты центра
@@ -55,13 +55,13 @@ def DrawEllips(size, ro):
     b = b ** 0.5 * constant
 
     t = np.linspace(0, 2 * pi, 100)
-    Ellips = np.array([a * np.cos(t), b * np.sin(t)])
+    Ellipse = np.array([a * np.cos(t), b * np.sin(t)])
     R_rot = np.array([[cos(t_rot), -sin(t_rot)], [sin(t_rot), cos(t_rot)]])
-    Ellips_rot = np.zeros((2, Ellips.shape[1]))
-    for i in range(Ellips.shape[1]):
-        Ellips_rot[:, i] = np.dot(R_rot, Ellips[:, i])
+    Ellipse_rot = np.zeros((2, Ellipse.shape[1]))
+    for i in range(Ellipse.shape[1]):
+        Ellipse_rot[:, i] = np.dot(R_rot, Ellipse[:, i])
 
-    plt.plot(u + Ellips_rot[0, :], v + Ellips_rot[1, :])
+    plt.plot(u + Ellipse_rot[0, :], v + Ellipse_rot[1, :])
     plt.plot(sample.transpose()[0], sample.transpose()[1], 'o')
     plt.title("n = " + str(size) + "   ro = " + str(ro))
     plt.xlabel('x')
@@ -83,7 +83,7 @@ for size in [20, 60, 100]:
             r_s_all.append(stats.spearmanr(sample)[0])
             r_q_all.append(r_Q(sample))
         PrintAll(r_all, r_s_all, r_q_all)
-        DrawEllips(size, ro)
+        DrawEllipse(size, ro)
 
 #смесь нормальных распределений
 for size in [20, 60, 100]:
