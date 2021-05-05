@@ -5,7 +5,7 @@ from scipy.stats import norm, linregress
 # оценка коэффициентов с помощью метода наименьших квадратов(МНК)
 def least_squares(x, y):
     res = linregress(x, y)
-    b_0, b_1 = res.slope, res.intercept
+    b_1, b_0 = res.slope, res.intercept
     return b_0, b_1
 
 # оценка коэффициентов с помощью метода наименьших модулей(МНМ)
@@ -20,8 +20,8 @@ def least_absolute(x, y):
     r_Q = r_Q / n
     q_y, q_x = (y[j] - y[l]) / k_q, (x[j] - x[l]) / k_q
 
-    b_0 = r_Q * q_y / q_x
-    b_1 = np.median(y) - b_0 * np.median(x)
+    b_1 = r_Q * q_y / q_x
+    b_0 = np.median(y) - b_1 * np.median(x)
     return b_0, b_1
 
 def printEst(x, y, y_model, strin):
@@ -29,13 +29,13 @@ def printEst(x, y, y_model, strin):
     b_0, b_1 = least_squares(x, y)
     # подсчет с помощью метода наименьших модулей(МНМ)
     b_0_LAD, b_1_LAD = least_absolute(x, y)
-    print("МНК ", strin, round(b_0, 4), round(b_1, 4))  # МНК
-    print("МНМ ", strin, round(b_0_LAD, 4), round(b_1_LAD, 4))  # МНМ
-    y_mnk = b_0 * x + b_1
-    y_mnm = b_0_LAD * x + b_1_LAD
+    print("МНК ", strin, round(b_0, 2), round(b_1, 2))  # МНК
+    print("МНМ ", strin, round(b_0_LAD, 2), round(b_1_LAD, 2))  # МНМ
+    y_mnk = b_0 + b_1 * x
+    y_mnm = b_0_LAD + b_1_LAD * x
     dist_mnk = sum([(y_model[i] - y_mnk[i]) ** 2 for i in range(len(y))])
     dist_mnm = sum([abs(y_model[i] - y_mnm[i]) for i in range(len(y))])
-    print("mnk distance = " + str(dist_mnk) + ", mnm distance = " + str(dist_mnm))
+    print("МНК dist = " + str(dist_mnk) + ", МНМ dist = " + str(dist_mnm))
 
     return y_mnk, y_mnm
 
@@ -61,3 +61,4 @@ y_mnk, y_mnm = printEst(x, y1, y_model, "без возмущения")
 Draw(x, y1, y_model, y_mnk, y_mnm, "Распределение без возмущения")
 y_mnk, y_mnm = printEst(x, y2, y_model, "с возмущением")
 Draw(x, y2, y_model, y_mnk, y_mnm, "Распределение с возмущением")
+
